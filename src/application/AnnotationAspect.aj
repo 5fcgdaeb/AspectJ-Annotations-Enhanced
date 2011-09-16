@@ -3,7 +3,7 @@ import static library.AnnotationTools.*;
 
 public aspect AnnotationAspect {
 	
-	pointcut importantMethodIsExecuted(): execution(public * *(..)) &&
+	pointcut importantMethodIsExecuted(): execution(public * application.*.*(..)) &&
 							if(containsAnnotation("@ImportantMethod()", thisJoinPoint));
 
 	before(): importantMethodIsExecuted() {

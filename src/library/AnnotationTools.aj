@@ -23,11 +23,11 @@ public aspect AnnotationTools {
 	}
 
 	private static Method findInvokedMethod(JoinPoint joinPoint) {
+		
 		System.out.println(joinPoint.getSignature().toString());
 		List<Method> allMethods = getMethodsOfAllInterfaces(joinPoint); 
 		
 		for(Method method: allMethods) {
-			//System.out.println(method.getName());
 			if(methodMatchesSignature(method,joinPoint.getSignature()))
 				return method;
 		}
@@ -37,6 +37,7 @@ public aspect AnnotationTools {
 	
 	private static boolean methodMatchesSignature(Method method, Signature signature) {
 		
+		//TODO: Use the class from library here
 		if(!method.getName().equals(signature.getName())) return false;
 		
 		return true;
@@ -44,6 +45,8 @@ public aspect AnnotationTools {
 	}
 
 	private static List<Method> getMethodsOfAllInterfaces(JoinPoint joinPoint) {
+		
+		if(isStaticMethod(joinPoint)) return new ArrayList<Method>();
 		
 		Class<?> classInHierarchy = joinPoint.getTarget().getClass();
 		
@@ -62,16 +65,41 @@ public aspect AnnotationTools {
 		return allMethods;
 	}
 	
+	private static boolean isStaticMethod(JoinPoint joinPoint) {
+		return joinPoint.getTarget() == null;
+	}
+
 	private static boolean doesInvokedMethodContainAnnotation(Method invokedMethodOfInterface, String annotation) {
 		
 		Annotation[] annotations = invokedMethodOfInterface.getAnnotations();
 		
 		for(Annotation ant : annotations) {
-			//System.out.println(ant + "--" + annotation);
+			
+			if(annotationMatches(ant,annotation)) return true;
+			/*System.out.println(ant);
+			System.out.println(ant.annotationType().toString());
 			if(ant.toString().equals(annotation))
-				return true;
+				return true;*/
 		}
 		
 		return false;
+	}
+
+	private static boolean annotationMatches(Annotation antFromMethod, String antFromUser) {
+		String justAnnotationNameFromUserInput = extractAnnotationNameFromUserInput(antFromUser);
+		String justAnnotationNameFromMethod = extractAnnotationNameFromMethod(antFromMethod);
+		
+		return justAnnotationNameFromMethod.equalsIgnoreCase(justAnnotationNameFromUserInput);
+	}
+
+	private static String extractAnnotationNameFromMethod(Annotation antFromMethod) {
+		int endOfAnnotationName = antFromMethod.toString().indexOf("(");
+		String upToAnnotationName = antFromMethod.toString().substring(0,endOfAnnotationName);
+		return upToAnnotationName.substring(upToAnnotationName.indexOf(".") + 1);
+	}
+
+	private static String extractAnnotationNameFromUserInput(String antFromUser) {
+		int endOfAnnotationName = antFromUser.toString().indexOf("(");
+		return antFromUser.substring(1,endOfAnnotationName);
 	}
 }
