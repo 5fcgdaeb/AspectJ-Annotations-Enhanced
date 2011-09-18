@@ -1,5 +1,4 @@
 package application;
-import library.MethodFromSignature;
 
 public class Main {
 
@@ -7,11 +6,11 @@ public class Main {
 		
 		SimpleInterface simpleInterface = new SimpleClass();
 
-		//simpleInterface.method(3, new SimpleClass());
-		simpleInterface.method(3);
-		//simpleInterface.someOtherMethod();
+		simpleInterface.method(3, new SimpleClass());
 		
-		//MethodFromSignature mfs = new MethodFromSignature("void B.method(int)");
+		simpleInterface.method(3);
+		
+		simpleInterface.someOtherMethod();
 	}
 
 }
