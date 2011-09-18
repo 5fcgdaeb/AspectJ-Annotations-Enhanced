@@ -12,7 +12,7 @@ import org.aspectj.lang.Signature;
 
 public aspect AnnotationTools {
 
-	public static boolean containsAnnotation(String annotation, JoinPoint joinPoint) {
+	public static boolean containsAnnotationInImplementedInterfaces(String annotation, JoinPoint joinPoint) {
 		
 		Method invokedMethodOfInterface = findInvokedMethod(joinPoint);
 		
@@ -37,6 +37,8 @@ public aspect AnnotationTools {
 	
 	private static boolean methodMatchesSignature(Method method, Signature signature) {
 		
+		System.out.println("Method from method is: " + method);
+		System.out.println("Method from signature is: " + signature);
 		//TODO: Use the class from library here
 		if(!method.getName().equals(signature.getName())) return false;
 		
@@ -74,12 +76,7 @@ public aspect AnnotationTools {
 		Annotation[] annotations = invokedMethodOfInterface.getAnnotations();
 		
 		for(Annotation ant : annotations) {
-			
 			if(annotationMatches(ant,annotation)) return true;
-			/*System.out.println(ant);
-			System.out.println(ant.annotationType().toString());
-			if(ant.toString().equals(annotation))
-				return true;*/
 		}
 		
 		return false;

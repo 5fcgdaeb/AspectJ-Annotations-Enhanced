@@ -8,6 +8,10 @@ import org.aspectj.lang.Signature;
 
 public class MethodFromSignature {
 
+	// Find the difference between the two
+	/*Method from method is:  public abstract void application.SimpleInterface.method(int,application.SimpleClass)
+	Method from signature is: void application.SimpleClass.method(int)
+	 */
 	private Class<?> returnType;
 	private String methodName;
 	private List<Class<?>> parameterTypes;
@@ -47,11 +51,10 @@ public class MethodFromSignature {
 	
 	private void parseMethodName(String signature) {
 		
-		int positionOfMethodNameStart = signature.indexOf(".");
-		int positionOfMethodNameEnd = signature.indexOf("(");
+		String methodBeforeArguments = signature.substring(0, signature.indexOf("("));
+		int positionOfMethodNameStart = methodBeforeArguments.lastIndexOf(".");
 		
-		methodName = signature.substring(positionOfMethodNameStart + 1,
-											positionOfMethodNameEnd);
+		methodName = methodBeforeArguments.substring(positionOfMethodNameStart + 1);
 	}
 
 	private void parseParameterTypes(String signature) {

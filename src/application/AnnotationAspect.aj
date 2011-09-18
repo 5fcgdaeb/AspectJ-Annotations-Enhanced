@@ -4,7 +4,7 @@ import static library.AnnotationTools.*;
 public aspect AnnotationAspect {
 	
 	pointcut importantMethodIsExecuted(): execution(public * application.*.*(..)) &&
-							if(containsAnnotation("@ImportantMethod()", thisJoinPoint));
+							if(containsAnnotationInImplementedInterfaces("@ImportantMethod()", thisJoinPoint));
 
 	before(): importantMethodIsExecuted() {
 		System.out.println("Important Method Pointcut match");
