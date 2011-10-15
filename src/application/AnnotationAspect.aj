@@ -7,7 +7,7 @@ public aspect AnnotationAspect {
 							if(implementsAnnotation("@ImportantMethod()", thisJoinPoint));
 
 	before(): importantMethodIsExecuted() {
-		System.out.println("Annotation Match");
+		System.out.println("Pointcut works, annotated method invocation intercepted.");
 	}
 	
 }

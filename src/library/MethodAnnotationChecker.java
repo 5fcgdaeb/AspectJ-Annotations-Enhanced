@@ -33,7 +33,7 @@ public class MethodAnnotationChecker {
 		
 		int endOfAnnotationName = antFromMethod.toString().indexOf("(");
 		String upToAnnotationName = antFromMethod.toString().substring(0,endOfAnnotationName);
-		return upToAnnotationName.substring(upToAnnotationName.indexOf(".") + 1);
+		return upToAnnotationName.substring(upToAnnotationName.lastIndexOf(".") + 1);
 	}
 
 	private String extractAnnotationNameFromUserInput(String antFromUser) {
